@@ -15,6 +15,11 @@ r1_src = list.files(fastq_src, '.*_L00._R1_001\\.fastq\\.gz', full.names=TRUE)
 r2_src = list.files(fastq_src, '.*_L00._R2_001\\.fastq\\.gz', full.names=TRUE)
 stopifnot(length(r1_src) == length(r2_src))
 
+#  Use a recopied version of a particular file found to be corrupt
+bad_file = file.path(fastq_src, 'R20219_HCJN3BBXY_S31_L005_R1_001.fastq.gz')
+replacement = file.path(fastq_src, 'tmp_recopy', 'R20219_HCJN3BBXY_S31_L005_R1_001.fastq.gz')
+r1_src[match(bad_file, r1_src)] = replacement
+
 ids = ss(basename(r1_src), '_L00')
 
 #  The destination paths (where we will place symbolic links)
