@@ -1,8 +1,9 @@
 library('jaffelab')
 library('here')
+library('sessioninfo')
 
 #  Paths to input and output FASTQs, and output manifest
-fastq_src = '/dcl01/ajaffe/data/Nina/Joel_R01/fastq/Year2'
+fastq_src = '/dcs04/lieber/data/transfers/Joel_RO1'
 fastq_dest = here('raw-data', 'FASTQ')
 man_path = here('processed-data', '01_SPEAQeasy', 'samples.manifest')
 
@@ -15,12 +16,7 @@ r1_src = list.files(fastq_src, '.*_L00._R1_001\\.fastq\\.gz', full.names=TRUE)
 r2_src = list.files(fastq_src, '.*_L00._R2_001\\.fastq\\.gz', full.names=TRUE)
 stopifnot(length(r1_src) == length(r2_src))
 
-#  Use a recopied version of a particular file found to be corrupt
-bad_file = file.path(fastq_src, 'R20219_HCJN3BBXY_S31_L005_R1_001.fastq.gz')
-replacement = file.path(fastq_src, 'tmp_recopy', 'R20219_HCJN3BBXY_S31_L005_R1_001.fastq.gz')
-r1_src[match(bad_file, r1_src)] = replacement
-
-ids = ss(basename(r1_src), '_L00')
+ids = ss(basename(r1_src), '_')
 
 #  The destination paths (where we will place symbolic links)
 r1_dest = file.path(fastq_dest, basename(r1_src))
@@ -33,3 +29,5 @@ file.symlink(r2_src, r2_dest)
 #  Create and write the manifest
 man = paste(r1_dest, 0, r2_dest, 0, ids, sep='\t')
 writeLines(man, con=man_path)
+
+session_info()
