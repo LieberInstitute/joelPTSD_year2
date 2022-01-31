@@ -1,3 +1,7 @@
+#  This is code from October 2021! Samples were since re-sequenced, so the
+#  below code no longer applies. It's kept here on the principle of not
+#  "deleting history".
+#
 #  As of 10/18/21, identify which original FASTQ files look suspicious, and
 #  check if the "recopy" provided "correct" versions of the corrupted files.
 #  This script actually finds that the recopy was only partially complete and
