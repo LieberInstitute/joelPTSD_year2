@@ -15,12 +15,14 @@ nextflow $base_dir/code/SPEAQeasy/main.nf \
     --sample "paired" \
     --reference "hg38" \
     --strand "reverse" \
+    --strand_mode "declare" \
     --annotation "/dcs04/lieber/lcolladotor/annotationFiles_LIBD001/SPEAQeasy/Annotation" \
     -with-report "${base_dir}/processed-data/01_SPEAQeasy/execution_reports/02_run_pipeline.html" \
     -w "${base_dir}/processed-data/01_SPEAQeasy/work" \
     --input "${base_dir}/processed-data/01_SPEAQeasy" \
     --output "${base_dir}/processed-data/01_SPEAQeasy/pipeline_output" \
-    -profile jhpce
+    -profile jhpce \
+    -resume
 
 #  Produces a report for each sample tracing the pipeline steps
 #  performed (can be helpful for debugging).
