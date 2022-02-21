@@ -10,14 +10,17 @@ library('SummarizedExperiment')
 library('here')
 library('readxl')
 
-rse_path_y1 = '/dcl02/lieber/ajaffe/kleinman_PTSD/count_data/rse_gene_Kleinman_R01_PTSD_n225_Annotated.Rdata'
+rse_dir_y1 = '/dcl02/lieber/ajaffe/kleinman_PTSD/preprocessed_data'
+rse_dir_y2 = here(
+    'processed-data', '01_SPEAQeasy', 'pipeline_output', 'count_objects'
+)
+rse_path_y1 = '/dcl02/lieber/ajaffe/kleinman_PTSD/preprocessed_data/rse_gene_Kleinman_R01_PTSD_n225.Rdata'
 rse_path_y2 = here(
     'processed-data', '01_SPEAQeasy', 'pipeline_output', 'count_objects',
     'rse_gene_Jlab_experiment_n238.Rdata'
 )
 
-#   Not the right path. Does one exist?
-y2_meta_path = "/dcl02/lieber/ajaffe/kleinman_PTSD/Joel’s PTSD R01 Y2 RNA Plate Map.xlsx"
+out_dir = here('processed-data', '01_SPEAQeasy', 'updated_output')
 
 ################################################################################
 #   Functions
@@ -48,9 +51,15 @@ get_unique_names = function(rse, rse_ref) {
 ################################################################################
 
 #   Load 'rse-gene' objects for both years
+rse_path_y1 = list.files(
+    rse_dir_y1, pattern = '^rse_gene_.*\\.Rdata$', full.names = TRUE
+)
 load(rse_path_y1, verbose = TRUE)
 rse_gene_y1 = rse_gene
 
+rse_path_y2 = list.files(
+    rse_dir_y2, pattern = '^rse_gene_.*\\.Rdata$', full.names = TRUE
+)
 load(rse_path_y2, verbose = TRUE)
 rse_gene_y2 = rse_gene
 rm(rse_gene)
@@ -65,6 +74,12 @@ print(get_unique_names(rse_gene_y2, rse_gene_y1))
 #-------------------------------------------------------------------------------
 
 old_names = c(
+    "FQCbasicStats", "perBaseQual", "perTileQual", "perSeqQual",
+    "perBaseContent", "GCcontent", "Ncontent", "SeqLengthDist",
+    "SeqDuplication", "OverrepSeqs", "AdapterContent","KmerContent"
+)
+
+new_names = c(
     "basic_statistics", "per_base_sequence_quality",
     "per_tile_sequence_quality", "per_sequence_quality_scores",
     "per_base_sequence_content", "per_sequence_gc_content",
@@ -73,15 +88,9 @@ old_names = c(
     "adapter_content", "kmer_content"
 )
 
-new_names = c(
-    "FQCbasicStats", "perBaseQual", "perTileQual", "perSeqQual",
-    "perBaseContent", "GCcontent", "Ncontent", "SeqLengthDist",
-    "SeqDuplication", "OverrepSeqs", "AdapterContent","KmerContent"
-)
-
 stopifnot(length(old_names) == length(new_names))
 for (i in 1:length(old_names)) {
-    rse_gene_y2 = rename_column(rse_gene_y2, old_names[i], new_names[i])
+    rse_gene_y1 = rename_column(rse_gene_y1, old_names[i], new_names[i])
 }
 
 #-------------------------------------------------------------------------------
@@ -102,12 +111,32 @@ for (missing_name in get_unique_names(rse_gene_y2, rse_gene_y1)) {
     rse_gene_y1[[missing_name]] = NA
 }
 
-#   Look at the columns unique to Y1
-print(get_unique_names(rse_gene_y1, rse_gene_y2))
+#   At this point columns are identical
+stopifnot(all(colnames(colData(rse_gene_y1)) %in% colnames(colData(rse_gene_y2))))
+stopifnot(all(colnames(colData(rse_gene_y2)) %in% colnames(colData(rse_gene_y1))))
 
 ################################################################################
-#   Add phenotype data to Y2 object
+#   Write copies of the Y1 and Y2 main outputs with the updated metrics
 ################################################################################
 
-#   Doesn't currently work
-pd_y2 = as.data.frame(read_excel(y2_meta_path))
+coldata_y1 = colData(rse_gene_y1)
+coldata_y2 = colData(rse_gene_y2)
+
+dir.create(out_dir, showWarnings = FALSE)
+dir.create(file.path(out_dir, 'year_1'), showWarnings = FALSE)
+dir.create(file.path(out_dir, 'year_2'), showWarnings = FALSE)
+
+#   Save the 'rse_gene' objects since we already have them loaded
+save(
+    rse_gene_y1,
+    file = file.path(
+        out_dir, 'year1', paste0('rse_gene_n', ncol(rse_gene_y1), '.Rdata')
+    )
+)
+
+save(
+    rse_gene_y2,
+    file = file.path(
+        out_dir, 'year1', paste0('rse_gene_n', ncol(rse_gene_y1), '.Rdata')
+    )
+)
