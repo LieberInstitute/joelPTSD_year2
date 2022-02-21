@@ -1,23 +1,15 @@
-#   The colData/ metrics need to be adjusted in year 2 for two different
-#   reasons:
-#
-#   - many columns represent the same information between Y1 and Y2, but have
-#     different colnames
-#   - the Y2 colData/ metrics don't yet have phenotype information attached, as
-#     the Y1 objects do
+#   The colData/ metrics need to be adjusted in year 1 and 2 so that the RSE
+#   objects can be easily combined (i.e. 'cbind'ed). This involves using the
+#   sames for FastQC-related columns and ensuring there aren't unique names to
+#   the colData of either object.
 
 library('SummarizedExperiment')
 library('here')
-library('readxl')
+library('sessioninfo')
 
 rse_dir_y1 = '/dcl02/lieber/ajaffe/kleinman_PTSD/preprocessed_data'
 rse_dir_y2 = here(
     'processed-data', '01_SPEAQeasy', 'pipeline_output', 'count_objects'
-)
-rse_path_y1 = '/dcl02/lieber/ajaffe/kleinman_PTSD/preprocessed_data/rse_gene_Kleinman_R01_PTSD_n225.Rdata'
-rse_path_y2 = here(
-    'processed-data', '01_SPEAQeasy', 'pipeline_output', 'count_objects',
-    'rse_gene_Jlab_experiment_n238.Rdata'
 )
 
 out_dir = here('processed-data', '01_SPEAQeasy', 'updated_output')
@@ -137,6 +129,56 @@ save(
 save(
     rse_gene_y2,
     file = file.path(
-        out_dir, 'year1', paste0('rse_gene_n', ncol(rse_gene_y1), '.Rdata')
+        out_dir, 'year2', paste0('rse_gene_n', ncol(rse_gene_y2), '.Rdata')
     )
 )
+
+#   Modify and save the 'rse_exon', 'rse_tx', and 'rse_jx' objects for both
+#   years
+for (var_name in c('rse_exon', 'rse_tx', 'rse_jx')) {
+    for (year in c('year_1', 'year_2')) {
+        if (year == 'year_1') {
+            rse_dir = rse_dir_y1
+            coldata_this = coldata_y1
+        } else {
+            rse_dir = rse_dir_y2
+            coldata_this = coldata_y2
+        }
+        
+        #   Load the object
+        rse_path = list.files(
+            rse_dir,
+            pattern = paste0('^', var_name, '_.*\\.Rdata$'),
+            full.names = TRUE
+        )
+        load(rse_path)
+        temp = get(var_name)
+        
+        #   Update colData
+        colData(temp) = coldata_this
+        
+        #   Resave
+        assign(var_name, temp)
+        save(
+            var_name,
+            file = file.path(
+                out_dir,
+                year,
+                paste0(var_name, '_n', ncol(temp), '.Rdata')
+            )
+        )
+    }
+}
+
+#   Update the CSV files of metrics
+write.csv(
+    data.frame(coldata_y1),
+    file = file.path(out_dir, 'year1', 'read_and_alignment_metrics.csv')
+)
+
+write.csv(
+    data.frame(coldata_y2),
+    file = file.path(out_dir, 'year2', 'read_and_alignment_metrics.csv')
+)
+
+session_info()
