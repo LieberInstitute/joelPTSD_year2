@@ -122,14 +122,14 @@ dir.create(file.path(out_dir, 'year_2'), showWarnings = FALSE)
 save(
     rse_gene_y1,
     file = file.path(
-        out_dir, 'year1', paste0('rse_gene_n', ncol(rse_gene_y1), '.Rdata')
+        out_dir, 'year_1', paste0('rse_gene_n', ncol(rse_gene_y1), '.Rdata')
     )
 )
 
 save(
     rse_gene_y2,
     file = file.path(
-        out_dir, 'year2', paste0('rse_gene_n', ncol(rse_gene_y2), '.Rdata')
+        out_dir, 'year_2', paste0('rse_gene_n', ncol(rse_gene_y2), '.Rdata')
     )
 )
 
@@ -160,7 +160,7 @@ for (var_name in c('rse_exon', 'rse_tx', 'rse_jx')) {
         #   Resave
         assign(var_name, temp)
         save(
-            var_name,
+            list = var_name,
             file = file.path(
                 out_dir,
                 year,
@@ -173,12 +173,12 @@ for (var_name in c('rse_exon', 'rse_tx', 'rse_jx')) {
 #   Update the CSV files of metrics
 write.csv(
     data.frame(coldata_y1),
-    file = file.path(out_dir, 'year1', 'read_and_alignment_metrics.csv')
+    file = file.path(out_dir, 'year_1', 'read_and_alignment_metrics.csv')
 )
 
 write.csv(
     data.frame(coldata_y2),
-    file = file.path(out_dir, 'year2', 'read_and_alignment_metrics.csv')
+    file = file.path(out_dir, 'year_2', 'read_and_alignment_metrics.csv')
 )
 
 session_info()
