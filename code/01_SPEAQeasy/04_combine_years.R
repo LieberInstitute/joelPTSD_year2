@@ -69,6 +69,14 @@ table(which(!equal_entrez) %in% which(!equal_genes))
 #   ranges that might result in bad EntrezIDs
 rowRanges(rse_gene_y2)$EntrezID = rowRanges(rse_gene_y1)$EntrezID
 
+#   Save the adjusted copy of 'rse_gene_y2'
+dir.create(here(rse_dir, 'year_2', 'adjusted_ranges'), showWarnings = FALSE)
+out_file = here(
+    rse_dir, 'year_2', 'adjusted_ranges', 
+    paste0('rse_gene_n', ncol(rse_gene_y2), '.Rdata')
+)
+save(rse_gene_y2, file = out_file)
+
 #   Now the 'meanExprs' column is different (which should actually be expected);
 #   recompute meanExprs by taking into account all samples
 temp = (rowRanges(rse_gene_y1)$meanExprs * ncol(rse_gene_y1) + 
@@ -112,6 +120,13 @@ rse_exon_y2 = rse_exon_y2[ranges(rse_exon_y2) %in% ranges(rse_exon_y1),]
 
 #   As we did for the genes, we'll use year 1 EntrezIDs (see above)
 rowRanges(rse_exon_y2)$EntrezID = rowRanges(rse_exon_y1)$EntrezID
+
+#   Save the adjusted copy of 'rse_exon_y2'
+out_file = here(
+    rse_dir, 'year_2', 'adjusted_ranges', 
+    paste0('rse_exon_n', ncol(rse_exon_y2), '.Rdata')
+)
+save(rse_exon_y2, file = out_file)
 
 #   Again, recompute 'meanExpr' since we're combining data
 #   Now the 'meanExprs' column is different (which should actually be expected);
