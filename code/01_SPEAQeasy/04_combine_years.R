@@ -1,9 +1,7 @@
 #   For convenience, we'd like to combine RangedSummarizedExperiment objects
 #   across year 1 and year 2. There are subtle differences due to code changes
 #   made between processing dates, which are resolved here before combining the
-#   objects. 'rse_gene', 'rse_exon', and 'rse_tx' are combined, while the
-#   individual 'rse_jx' objects are left as-is (since junctions always differ
-#   by dataset).
+#   objects.
 
 library('SummarizedExperiment')
 library('here')
@@ -157,5 +155,20 @@ out_file = here(
     rse_dir, 'merged', paste0('rse_tx_n', ncol(rse_tx), '.Rdata')
 )
 save(rse_tx, file = out_file)
+
+#-------------------------------------------------------------------------------
+#   Junctions
+#-------------------------------------------------------------------------------
+
+rse_jx_y1 = load_obj('rse_jx', 1)
+rse_jx_y2 = load_obj('rse_jx', 2)
+
+#   We only used the canonical chromosomes for year 1's junctions, but included
+#   additional scaffolds for year 2. Subset year 2 to use the same sequences
+rse_jx_y2 = rse_jx_y2[seqnames(rse_jx_y2) %in% seqnames(rse_jx_y1),]
+
+#   Get an idea of how ranges overlap between years
+length(ranges(rse_jx_y1)[ranges(rse_jx_y1) %in% ranges(rse_jx_y2)])
+length(ranges(rse_jx_y2)[ranges(rse_jx_y2) %in% ranges(rse_jx_y1)])
 
 session_info()
