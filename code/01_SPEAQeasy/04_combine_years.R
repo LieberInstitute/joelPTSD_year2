@@ -24,9 +24,9 @@ load_obj = function(var_name, year, verbose = TRUE) {
     return(get(obj_name))
 }
 
-#-------------------------------------------------------------------------------
+################################################################################
 #   Genes
-#-------------------------------------------------------------------------------
+################################################################################
 
 rse_gene_y1 = load_obj('rse_gene', 1)
 rse_gene_y2 = load_obj('rse_gene', 2)
@@ -95,9 +95,9 @@ out_file = here(
 )
 save(rse_gene, file = out_file)
 
-#-------------------------------------------------------------------------------
+################################################################################
 #   Exons
-#-------------------------------------------------------------------------------
+################################################################################
 
 rse_exon_y1 = load_obj('rse_exon', 1)
 rse_exon_y2 = load_obj('rse_exon', 2)
@@ -146,9 +146,9 @@ out_file = here(
 )
 save(rse_exon, file = out_file)
 
-#-------------------------------------------------------------------------------
+################################################################################
 #   Transcripts
-#-------------------------------------------------------------------------------
+################################################################################
 
 rse_tx_y1 = load_obj('rse_tx', 1)
 rse_tx_y2 = load_obj('rse_tx', 2)
@@ -171,9 +171,9 @@ out_file = here(
 )
 save(rse_tx, file = out_file)
 
-#-------------------------------------------------------------------------------
+################################################################################
 #   Junctions
-#-------------------------------------------------------------------------------
+################################################################################
 
 rse_jx_y1 = load_obj('rse_jx', 1)
 rse_jx_y2 = load_obj('rse_jx', 2)
@@ -185,5 +185,56 @@ rse_jx_y2 = rse_jx_y2[seqnames(rse_jx_y2) %in% seqnames(rse_jx_y1),]
 #   Get an idea of how ranges overlap between years
 length(ranges(rse_jx_y1)[ranges(rse_jx_y1) %in% ranges(rse_jx_y2)])
 length(ranges(rse_jx_y2)[ranges(rse_jx_y2) %in% ranges(rse_jx_y1)])
+
+#-------------------------------------------------------------------------------
+#   rowRanges
+#-------------------------------------------------------------------------------
+
+#   Re-compute meanExprs column for junctions seen in both year 1 and year 2
+shared_names = names(ranges(rse_jx_y1))[
+    names(ranges(rse_jx_y1)) %in% names(ranges(rse_jx_y2))
+]
+
+mean_exprs_y1 = rowRanges(rse_jx_y1)$meanExprs[shared_names]
+mean_exprs_y2 = rowRanges(rse_jx_y2)$meanExprs[shared_names]
+
+shared_mean = (mean_exprs_y1 * ncol(rse_jx_y1) +
+    mean_exprs_y2 * ncol(rse_jx_y2)) / 
+    (ncol(rse_jx_y1) + ncol(rse_jx_y2))
+
+#   Take the union of rowRanges
+gr_union = unique(c(rowRanges(rse_jx_y1), rowRanges(rse_jx_y2)))
+gr_union$meanExprs[shared_names] = shared_mean
+
+#-------------------------------------------------------------------------------
+#   assays
+#-------------------------------------------------------------------------------
+
+#   Initialize NA counts assays for the future merged rse_jx
+counts = matrix(
+    NA, nrow = length(gr_union), ncol = ncol(rse_jx_y1) + ncol(rse_jx_y2),
+    dimnames = list(
+        names(gr_union), c(colnames(rse_jx_y1), colnames(rse_jx_y2))
+    )
+)
+
+#   Fill counts with the assays from each year
+counts[rownames(rse_jx_y1), colnames(rse_jx_y1)] = assays(rse_jx_y1)$counts
+counts[rownames(rse_jx_y2), colnames(rse_jx_y2)] = assays(rse_jx_y2)$counts
+
+#-------------------------------------------------------------------------------
+#   Construct combined 'rse_jx' SummarizedExperiment
+#-------------------------------------------------------------------------------
+
+rse_jx = SummarizedExperiment(
+    assays = list('counts' = counts), rowRanges = gr_union,
+    colData = rbind(colData(rse_jx_y1), colData(rse_jx_y2))
+)
+
+#   Save
+out_file = here(
+    rse_dir, 'merged', paste0('rse_jx_n', ncol(rse_jx), '.Rdata')
+)
+save(rse_jx, file = out_file)
 
 session_info()
