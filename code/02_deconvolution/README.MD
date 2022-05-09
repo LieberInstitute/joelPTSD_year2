@@ -14,3 +14,15 @@ as sn-RNAseq reference
 * top 25 "mean ratio" marker genes (except 23 for Macro), recorded in `processed-data/02_deconvolution/PTSD_deconvolution_markers.csv`  
 * results recorded in `processed-data/02_deconvolution/PTSD_deconvolution_results.csv` & `processed-data/02_deconvolution/est_prop_Bisque.Rdata`  
 
+| Cell Type   | Acronym |
+| ----------- | ----------- |
+| Astrocyte | Astro|
+| Endothelial Cells | Endo |
+| Macrophage | Macro |
+| Microglia | Micro |
+| Mural Cells | Mural | 
+| Oligodendrocytes | Oligo | 
+| Oligodendrocyte Progenitor Cells | OPC | 
+| T-Cells | Tcell | 
+| Excitatory Neurons | Excit |
+| Inhibitory Neurons | Inhib |
