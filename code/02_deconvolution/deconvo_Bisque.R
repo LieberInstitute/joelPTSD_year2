@@ -165,19 +165,22 @@ stopifnot(identical(rownames(est_prop$bulk.props), rse_gene$RNum))
 
 ## Explore the samples with no excitatory neurons
 rse_gene$no_excit <- est_prop$bulk.props[, "Excit"] == 0
-no_excit <- as.data.frame(subset(colData(rse_gene)[, c("Age",
+no_excit <- as.data.frame(subset(colData(rse_gene)[, c(
+    "Age",
     "Region",
     "Sex",
     "Dx",
     "Race",
     "Dataset",
     "RIN",
-    "no_excit")], no_excit == TRUE))
+    "no_excit"
+)], no_excit == TRUE))
 summary(data.frame(lapply(no_excit, function(x) {
-    if (is.character(x))
+    if (is.character(x)) {
         return(factor(x))
-    else
+    } else {
         return(x)
+    }
 })))
 #      Age                  Region   Sex          Dx       Race
 # Min.   :17.47   Central Amyg :19   F:20   Control:20   AA  : 4
