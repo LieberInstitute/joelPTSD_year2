@@ -23,17 +23,18 @@ marker_stats %>%
     count(cellType.target)
 
 ## all genes present
-# cellType.target     n
-# <fct>           <int>
-# 1 Astro              25
-# 2 Endo               25
-# 3 Macro              25
-# 4 Micro              25
-# 5 Mural              25
-# 6 Oligo              25
-# 7 OPC                25
-# 8 Tcell              25
-# 9 Excit              25
+# # A tibble: 10 × 2
+#    cellType.target     n
+#    <fct>           <int>
+#  1 Astro              25
+#  2 Endo               25
+#  3 Macro              25
+#  4 Micro              25
+#  5 Mural              25
+#  6 Oligo              25
+#  7 OPC                25
+#  8 Tcell              25
+#  9 Excit              25
 # 10 Inhib              25
 
 marker_stats2 <- marker_stats %>%
@@ -45,6 +46,20 @@ marker_stats2 <- marker_stats %>%
 marker_stats2 %>%
     filter(rank_ratio <= 25) %>%
     dplyr::count(cellType.target)
+# # A tibble: 10 × 2
+# # Groups:   cellType.target [10]
+#    cellType.target     n
+#    <fct>           <int>
+#  1 Astro              25
+#  2 Endo               25
+#  3 Macro              23
+#  4 Micro              25
+#  5 Mural              25
+#  6 Oligo              25
+#  7 OPC                25
+#  8 Tcell              25
+#  9 Excit              25
+# 10 Inhib              25
 
 marker_genes <- marker_stats2 %>%
     filter(rank_ratio <= 25) %>%
