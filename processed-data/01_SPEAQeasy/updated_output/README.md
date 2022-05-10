@@ -5,3 +5,11 @@ Data contained here, by directory:
 - `processed_data/merged_with_Y1`: final processed R objects containing all samples across year 1 and 2.
 
 - `fastq`: raw sequencer outputs (FASTQ format) for year 2.
+
+
+From Geo Pertea:
+
+* Year2 dataset with demo data added: `/dcs04/lieber/lcolladotor/joelPTSD_LIBD3040/joelPTSD_year2/processed-data/01_SPEAQeasy/updated_output/year_2/rse_*.y2_n238.Rdata`
+* Year1+Year2 merged RSEs: `/dcs04/lieber/lcolladotor/joelPTSD_LIBD3040/joelPTSD_year2/processed-data/01_SPEAQeasy/updated_output/merged/rse_*.y1y2_n463.Rdata`.
+* Note that the Y1 data in this merged file was already included in the large merged RSEs as part of the "PTSD_Brainomics" dataset.
+* The pheno data from Ran that I used for this Year 2 batch is here: `/dcs04/lieber/lcolladotor/joelPTSD_LIBD3040/joelPTSD_year2/pheno_data/Joel_PTSD_Y3_RNA_Samples_Info.csv`
