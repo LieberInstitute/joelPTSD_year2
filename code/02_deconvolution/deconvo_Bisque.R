@@ -79,7 +79,7 @@ marker_table <- marker_stats2 %>%
     left_join(rd) %>%
     dplyr::select(gencodeID, `Cell Type`, Symbol)
 
-write_csv(marker_table, file = here("processed-data", "02_deconvolution", "PTSD_deconvolution_markers.csv"))
+readr::write_csv(marker_table, file = here("processed-data", "02_deconvolution", "PTSD_deconvolution_markers.csv"))
 
 #### create expression set ####
 exp_set_bulk <- ExpressionSet(
