@@ -120,15 +120,81 @@ write.csv(est_prop$bulk.props, file = here("processed-data", "02_deconvolution",
 
 est_prop$Est.prop.long <- est_prop$bulk.props %>%
     as.data.frame() %>%
-    rownames_to_column("Sample") %>%
+    tibble::rownames_to_column("Sample") %>%
     pivot_longer(!Sample, names_to = "cell_type", values_to = "prop")
 
 ## Add long data and save
 round(colMeans(est_prop$bulk.props), 3)
 # Astro  Endo Macro Micro Mural Oligo   OPC Tcell Excit Inhib
-# 0.066 0.003 0.005 0.047 0.009 0.351 0.063 0.008 0.095 0.353
+# 0.066 0.003 0.005 0.047 0.010 0.351 0.062 0.008 0.094 0.353
 
 summary(est_prop$bulk.props)
+#     Astro              Endo               Macro              Micro
+# Min.   :0.00000   Min.   :0.0000000   Min.   :0.000000   Min.   :0.00000
+# 1st Qu.:0.04701   1st Qu.:0.0000000   1st Qu.:0.000000   1st Qu.:0.03268
+# Median :0.06590   Median :0.0008699   Median :0.001698   Median :0.04870
+# Mean   :0.06634   Mean   :0.0031168   Mean   :0.005302   Mean   :0.04663
+# 3rd Qu.:0.08629   3rd Qu.:0.0059085   3rd Qu.:0.009904   3rd Qu.:0.06286
+# Max.   :0.18017   Max.   :0.0214793   Max.   :0.038200   Max.   :0.11878
+#     Mural              Oligo             OPC              Tcell
+# Min.   :0.000000   Min.   :0.0000   Min.   :0.00000   Min.   :0.000000
+# 1st Qu.:0.000000   1st Qu.:0.2320   1st Qu.:0.03806   1st Qu.:0.000000
+# Median :0.003759   Median :0.3265   Median :0.05703   Median :0.003830
+# Mean   :0.009970   Mean   :0.3511   Mean   :0.06235   Mean   :0.008261
+# 3rd Qu.:0.017108   3rd Qu.:0.4399   3rd Qu.:0.08048   3rd Qu.:0.014622
+# Max.   :0.064820   Max.   :1.0000   Max.   :0.19508   Max.   :0.045075
+#     Excit             Inhib
+# Min.   :0.00000   Min.   :0.0000
+# 1st Qu.:0.05674   1st Qu.:0.2808
+# Median :0.08758   Median :0.3429
+# Mean   :0.09429   Mean   :0.3526
+# 3rd Qu.:0.13797   3rd Qu.:0.4227
+# Max.   :0.23441   Max.   :1.0000
+
+## Explore a bit more the samples that have no neurons
+with(as.data.frame(est_prop$bulk.props), addmargins(table(
+    "No excitatory" = Excit == 0, "No inhibitory" = Inhib == 0
+)))
+#              No inhibitory
+# No excitatory FALSE TRUE Sum
+#         FALSE   422    0 422
+#         TRUE     39    2  41
+#         Sum     461    2 463
+
+stopifnot(identical(rownames(est_prop$bulk.props), rse_gene$RNum))
+
+## Explore the samples with no excitatory neurons
+rse_gene$no_excit <- est_prop$bulk.props[, "Excit"] == 0
+no_excit <- as.data.frame(subset(colData(rse_gene)[, c("Age",
+    "Region",
+    "Sex",
+    "Dx",
+    "Race",
+    "Dataset",
+    "RIN",
+    "no_excit")], no_excit == TRUE))
+summary(data.frame(lapply(no_excit, function(x) {
+    if (is.character(x))
+        return(factor(x))
+    else
+        return(x)
+})))
+#      Age                  Region   Sex          Dx       Race
+# Min.   :17.47   Central Amyg :19   F:20   Control:20   AA  : 4
+# 1st Qu.:31.38   Dentate Gyrus:17   M:21   MDD    :10   AS  : 1
+# Median :45.13   mPFC         : 5          PTSD   :11   CAUC:35
+# Mean   :43.56                                          HISP: 1
+# 3rd Qu.:54.71
+# Max.   :69.03
+#       Dataset        RIN        no_excit
+# PTSD_Year1:18   Min.   :5.100   Mode:logical
+# PTSD_Year2:23   1st Qu.:6.000   TRUE:41
+#                 Median :6.300
+#                 Mean   :6.395
+#                 3rd Qu.:6.600
+#                 Max.   :9.700
+
+## Hm... I don't see any obvious patterns. Maybe the brain region?
 
 ## Save full results
 est_prop_bisque <- est_prop
