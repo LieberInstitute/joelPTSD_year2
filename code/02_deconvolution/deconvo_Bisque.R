@@ -203,7 +203,7 @@ summary(data.frame(lapply(no_excit, function(x) {
 est_prop_bisque <- est_prop
 save(est_prop_bisque, file = here("processed-data", "02_deconvolution", "est_prop_Bisque.Rdata"))
 
-# sgejobs::job_single('deconvo_Bisque', create_shell = TRUE, queue= 'bluejay', memory = '20G', command = "Rscript deconvo_Bisque.R")
+# sgejobs::job_single('deconvo_Bisque', create_shell = TRUE, queue= 'bluejay', memory = '40G', command = "Rscript deconvo_Bisque.R")
 ## Reproducibility information
 print("Reproducibility information:")
 Sys.time()
