@@ -5,7 +5,7 @@ Louise A. Huuki-Myers
 5/9/2022
 
 ### Details
-[`deconvo_bisque.R`](deconvo_bisque.R): Run deconvolution analysis with Bisque 
+[`deconvo_Bisque.R`](deconvo_Bisque.R): Run deconvolution analysis with Bisque 
 ([Jew et al., Nature Communications, 2013](https://doi.org/10.1038/s41467-020-15816-6))  
 
 * Used 5 region "pan" brain data from [Tran, Maynard et al., Neuron, 2021](https://github.com/LieberInstitute/10xPilot_snRNAseq-human) 
