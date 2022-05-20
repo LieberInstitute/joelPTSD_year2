@@ -131,7 +131,7 @@ rse_jx <- SummarizedExperiment(
 
 save(
     rse_jx,
-    file = here(out_dir, "merged", paste0("rse_jx_n", ncol(rse_jx), ".Rdata"))
+    file = here(out_dir, paste0("rse_jx_n", ncol(rse_jx), ".Rdata"))
 )
 
 session_info()
