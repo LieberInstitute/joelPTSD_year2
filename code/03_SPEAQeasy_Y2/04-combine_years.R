@@ -89,14 +89,14 @@ rse_jx_2 <- load_obj(rse_dir_2, 'rse_jx')
 
 #   Re-compute meanExprs column for junctions seen in both year 1,3 and year 2
 shared_names <- names(ranges(rse_jx_1and3))[
-    names(ranges(rse_jx_1and3)) %in% names(ranges(rse_jx_y2))
+    names(ranges(rse_jx_1and3)) %in% names(ranges(rse_jx_2))
 ]
 
 mean_exprs_1and3 <- rowRanges(rse_jx_1and3)$meanExprs[shared_names]
 mean_exprs_2 <- rowRanges(rse_jx_2)$meanExprs[shared_names]
 
 shared_mean <- (mean_exprs_1and3 * ncol(rse_jx_1and3) +
-    mean_exprs_2 * ncol(rse_jx_y2)) /
+    mean_exprs_2 * ncol(rse_jx_2)) /
     (ncol(rse_jx_1and3) + ncol(rse_jx_2))
 
 #   Take the union of rowRanges
