@@ -2,7 +2,7 @@
 #$ -cwd
 #$ -o ../../processed-data/03_SPEAQeasy_Y2/04-combine_years.log
 #$ -e ../../processed-data/03_SPEAQeasy_Y2/04-combine_years.log
-#$ -l mf=50G,h_vmem=50G
+#$ -l mf=100G,h_vmem=100G
 #$ -N combine_years
 
 echo "**** Job starts ****"
