@@ -1,5 +1,6 @@
 raw-data/FASTQ
 raw-data/FASTQ_Y2
 code/01_SPEAQeasy/.nextflow*
+code/03_SPEAQeasy_Y2/.nextflow*
 code/SPEAQeasy_Y2
 .Rproj.user
