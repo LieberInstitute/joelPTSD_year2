@@ -10,7 +10,10 @@ library("sessioninfo")
 
 #### Load Data ####
 ## Load rse_gene data
-load(here("processed-data", "01_SPEAQeasy", "updated_output", "merged", "rse_gene.y1y2_n463.Rdata"), verbose = TRUE)
+load(here("processed-data", "03_SPEAQeasy_Y2", "updated_output", "merged", "rse_gene_pd_n688.Rdata"), verbose = TRUE)
+dim(rse_gene)
+# [1] 58037   688
+
 ## use ensemblID as rownames to match sn Data
 rownames(rse_gene) <- rowData(rse_gene)$ensemblID
 
