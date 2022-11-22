@@ -21,7 +21,11 @@ The [RNAseq-pipeline](https://github.com/LieberInstitute/RNAseq-pipeline) (DOI: 
 
 ### Main scripts
 
-TODO by @nick-eagles
+Three batches of data were processed: years 1, 2 and 3. Year 1 was processed with the RNA-seq pipeline and merged with Year 2 with the code from https://github.com/LieberInstitute/joelPTSD_year2/tree/master/code/01_SPEAQeasy. In particular,  https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/01_SPEAQeasy/03_edit_outputs.R and https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/01_SPEAQeasy/04_combine_years.R were used for combining Years 1 and 2.
+
+Years 1+2 along with year 3 were combined with the code at https://github.com/LieberInstitute/joelPTSD_year2/tree/master/code/03_SPEAQeasy_Y2, in particular https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/03_SPEAQeasy_Y2/03-edit_outputs.R and https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/03_SPEAQeasy_Y2/04-combine_years.R.
+
+TODO: check by @nick-eagles
 
 ## Cell type deconvolution
 
