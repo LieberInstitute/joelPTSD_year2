@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/373568668.svg)](https://zenodo.org/badge/latestdoi/373568668)
+
 # joelPTSD_year2
 
 Joel's R01 PTSD Year2 data
