@@ -25,8 +25,6 @@ Three batches of data were processed: years 1, 2 and 3. Year 1 was processed wit
 
 Years 1+2 along with year 3 were combined with the code at https://github.com/LieberInstitute/joelPTSD_year2/tree/master/code/03_SPEAQeasy_Y2, in particular https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/03_SPEAQeasy_Y2/03-edit_outputs.R and https://github.com/LieberInstitute/joelPTSD_year2/blob/master/code/03_SPEAQeasy_Y2/04-combine_years.R.
 
-TODO: check by @nick-eagles
-
 ## Cell type deconvolution
 
 TODO by @lahuuki
