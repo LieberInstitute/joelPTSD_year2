@@ -2,7 +2,7 @@
 
 # joelPTSD_year2
 
-This reposotory contains the custom code for processing the bulk RNA sequencing (RNA-seq) data from US National Institutes of Health grant [R01MH117291](https://reporter.nih.gov/search/B68mnmkOgkGdPZcs09B2zw/project-details/10400227) whose LIBD principal investigator is [Joel E. Kleinman](https://www.libd.org/team/joel-kleinman).
+This repository contains the custom code for processing the bulk RNA sequencing (RNA-seq) data from US National Institutes of Health grant [R01MH117291](https://reporter.nih.gov/search/B68mnmkOgkGdPZcs09B2zw/project-details/10400227) whose LIBD principal investigator is [Joel E. Kleinman](https://www.libd.org/team/joel-kleinman). The file structure used in this project mimics the one from [LieberInstitute/template_project](https://github.com/LieberInstitute/template_project).
 
 If you have any questions about the code on this GitHub repository, please ask questions publicly at https://github.com/LieberInstitute/joelPTSD_year2/issues such that everyone can benefit from the answers. Thank you!
 
