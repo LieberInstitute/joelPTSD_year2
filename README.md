@@ -27,12 +27,11 @@ Years 1+2 along with year 3 were combined with the code at https://github.com/Li
 
 ## Cell type deconvolution
 
-TODO by @lahuuki
-
+Deconvolution was performed with the `ReferenceBasedDecompositio`n  function from the  R package [BisqueRNA](https://cran.r-project.org/package=BisqueRNA) version 1.0.5 (PMID: [32332754](https://pubmed.ncbi.nlm.nih.gov/32332754/)), using the `use.overlap = FALSE` option.  The single cell reference data set used is single nucleus RNA-seq from the 10X protocol, which includes tissue from eight donors and 5 brain regions (PMID: [34582785](https://pubmed.ncbi.nlm.nih.gov/34582785/)). The ten cell types considered in the deconvolution of the tissue were Astrocytes (Astro), Endothelial (Endo), Macro (Macrophages), Microglia (Micro),  Mural cells, Oligodendrocytes (Oligo), Oligodendrocyte Progenitor Cells (OPC), T cells, Excitatory Neurons (Excit), and Inhibitory Neurons (Inhib). Marker genes were selected by first filtering for genes common between the bulk data and the reference data, then calculating the ratio of the mean expression of each gene in the target cell type over the highest mean expression of that gene in a non-target cell type. The 25 genes with the highest ratios for each cell type were selected as markers. 
 
 ### Main scripts
 
-TODO by @lahuuki
+The main scripts for snRNA-seq reference-based cell-type deconvolution of the bulk RNA-seq data are available at https://github.com/LieberInstitute/joelPTSD_year2/tree/master/code/02_deconvolution.
 
 ## Internal
 
